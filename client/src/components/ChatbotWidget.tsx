@@ -289,8 +289,8 @@ export function ChatbotWidget() {
       <Card 
         className={cn(
           "absolute bottom-20 right-0 w-80 h-[450px] shadow-2xl transform transition-all duration-300 flex flex-col overflow-hidden bg-white rounded-2xl border border-gray-200",
-          "sm:w-[calc(100vw-1rem)] sm:h-[calc(100vh-6rem)] sm:bottom-16 sm:right-0",
-          "md:w-[320px] md:h-[480px]",
+          "sm:w-[calc(100vw-2rem)] sm:h-[75vh] sm:bottom-20 sm:right-4 sm:left-4 sm:mx-auto",
+          "md:w-[320px] md:h-[480px] md:right-0 md:left-auto",
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         )}
         style={{ 
