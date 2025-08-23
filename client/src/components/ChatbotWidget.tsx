@@ -277,30 +277,37 @@ export function ChatbotWidget() {
       {/* Chat Window */}
       <Card 
         className={cn(
-          "absolute bottom-20 right-0 w-80 h-[450px] shadow-2xl transform transition-all duration-300 flex flex-col overflow-hidden bg-white",
+          "absolute bottom-20 right-0 w-80 h-[450px] shadow-2xl transform transition-all duration-300 flex flex-col overflow-hidden bg-white rounded-2xl border border-gray-200",
           "sm:w-[calc(100vw-1rem)] sm:h-[calc(100vh-6rem)] sm:bottom-16 sm:right-0",
           "md:w-[320px] md:h-[480px]",
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         )}
-        style={{ transformOrigin: 'bottom right' }}
+        style={{ 
+          transformOrigin: 'bottom right',
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+        }}
         data-testid="card-chat-window"
       >
         {/* Header */}
-        <div className="bg-[hsl(203.8863,88.2845%,53.1373%)] text-white p-4 flex items-center justify-between">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 flex items-center justify-between rounded-t-2xl">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-              <Bot className="h-5 w-5" />
+            <div className="w-11 h-11 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
+              <span className="text-xl">🎓</span>
             </div>
             <div>
-              <h3 className="font-semibold">XYZ College Assistant</h3>
-              <p className="text-xs text-blue-100">Online • Ready to help! 🎓</p>
+              <h3 className="font-semibold text-white">XYZ College Assistant</h3>
+              <div className="text-xs text-blue-100 flex items-center">
+                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                Online • Ready to help!
+              </div>
             </div>
           </div>
           <Button
             variant="ghost"
             size="sm"
             onClick={toggleChat}
-            className="text-white hover:text-blue-200 hover:bg-white/10"
+            className="text-white hover:text-blue-200 hover:bg-white/10 rounded-full p-2"
             data-testid="button-close-chat"
           >
             <X className="h-5 w-5" />
@@ -308,27 +315,29 @@ export function ChatbotWidget() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-blue-50/30 to-white">
           {messages.map((message) => (
             <div key={message.id} className="animate-slide-up">
               {message.type === 'bot' ? (
-                <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-[hsl(203.8863,88.2845%,53.1373%)] text-white rounded-full flex items-center justify-center">
-                    <Bot className="h-4 w-4" />
+                <div className="flex items-start space-x-3 mb-4">
+                  <div className="w-9 h-9 bg-gradient-to-br from-blue-400 to-blue-600 text-white rounded-full flex items-center justify-center shadow-sm flex-shrink-0">
+                    <span className="text-sm">🤖</span>
                   </div>
-                  <div className="bg-white rounded-lg p-3 shadow-sm max-w-[280px]">
-                    <p className="text-gray-800 text-sm whitespace-pre-line" data-testid={`text-bot-message-${message.id}`}>
-                      {message.content}
-                    </p>
+                  <div className="flex-1">
+                    <div className="bg-white rounded-2xl rounded-tl-md p-4 shadow-md border border-gray-100 max-w-[240px]">
+                      <p className="text-gray-800 text-sm whitespace-pre-line leading-relaxed" data-testid={`text-bot-message-${message.id}`}>
+                        {message.content}
+                      </p>
+                    </div>
                     {message.options && (
-                      <div className="flex flex-wrap gap-2 mt-3">
+                      <div className="flex flex-wrap gap-2 mt-3 max-w-[240px]">
                         {message.options.map((option) => (
                           <Button
                             key={option.id}
                             variant="secondary"
                             size="sm"
                             onClick={() => handleQuickReply(option.action || option.id)}
-                            className="text-xs bg-blue-100 text-[hsl(203.8863,88.2845%,53.1373%)] hover:bg-blue-200 border-0"
+                            className="text-xs bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 hover:from-blue-100 hover:to-blue-200 border border-blue-200 rounded-full px-3 py-1.5 shadow-sm transition-all duration-200 hover:shadow-md"
                             data-testid={`button-quick-reply-${option.id}`}
                           >
                             {option.label}
@@ -336,14 +345,22 @@ export function ChatbotWidget() {
                         ))}
                       </div>
                     )}
+                    <div className="text-xs text-gray-400 mt-2 ml-1">
+                      {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-end">
-                  <div className="bg-[hsl(203.8863,88.2845%,53.1373%)] text-white rounded-lg p-3 shadow-sm max-w-[280px]">
-                    <p className="text-sm" data-testid={`text-user-message-${message.id}`}>
-                      {message.content}
-                    </p>
+                <div className="flex justify-end mb-4">
+                  <div className="flex flex-col items-end max-w-[240px]">
+                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl rounded-tr-md p-3 shadow-md">
+                      <p className="text-sm font-medium" data-testid={`text-user-message-${message.id}`}>
+                        {message.content}
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-400 mt-2 mr-1">
+                      {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
                   </div>
                 </div>
               )}
@@ -352,15 +369,16 @@ export function ChatbotWidget() {
           
           {/* Typing Indicator */}
           {isTyping && (
-            <div className="flex items-start space-x-3 animate-fade-in">
-              <div className="w-8 h-8 bg-[hsl(203.8863,88.2845%,53.1373%)] text-white rounded-full flex items-center justify-center">
-                <Bot className="h-4 w-4" />
+            <div className="flex items-start space-x-3 animate-fade-in mb-4">
+              <div className="w-9 h-9 bg-gradient-to-br from-blue-400 to-blue-600 text-white rounded-full flex items-center justify-center shadow-sm animate-pulse">
+                <span className="text-sm">🤖</span>
               </div>
-              <div className="bg-white rounded-lg p-3 shadow-sm">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-typing" style={{ animationDelay: '0s' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-typing" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-typing" style={{ animationDelay: '0.2s' }}></div>
+              <div className="bg-white rounded-2xl rounded-tl-md p-4 shadow-md border border-gray-100">
+                <div className="flex space-x-1 items-center">
+                  <span className="text-gray-500 text-sm mr-2">Bot is typing</span>
+                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-typing" style={{ animationDelay: '0s' }}></div>
+                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-typing" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-typing" style={{ animationDelay: '0.4s' }}></div>
                 </div>
               </div>
             </div>
@@ -370,7 +388,7 @@ export function ChatbotWidget() {
         </div>
 
         {/* Input Area */}
-        <CardContent className="border-t border-gray-200 p-4 bg-white">
+        <CardContent className="border-t border-gray-200 p-4 bg-white rounded-b-2xl">
           {getBreadcrumb()}
           
           <div className="flex items-center space-x-2">
@@ -380,14 +398,14 @@ export function ChatbotWidget() {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type your question here... 💬"
-                className="pr-10 rounded-full border-gray-300 focus:ring-[hsl(203.8863,88.2845%,53.1373%)] focus:border-[hsl(203.8863,88.2845%,53.1373%)]"
+                className="pr-12 rounded-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 hover:bg-white transition-colors shadow-sm"
                 data-testid="input-chat-message"
               />
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={handleSendMessage}
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[hsl(203.8863,88.2845%,53.1373%)] p-1 h-8 w-8"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-2 h-8 w-8 rounded-full transition-all duration-200"
                 data-testid="button-send-message"
               >
                 <Send className="h-4 w-4" />
@@ -400,7 +418,7 @@ export function ChatbotWidget() {
               variant="ghost"
               size="sm"
               onClick={goBack}
-              className="mt-2 text-xs text-gray-500 hover:text-[hsl(203.8863,88.2845%,53.1373%)] p-0 h-auto"
+              className="mt-2 text-xs text-gray-500 hover:text-blue-600 hover:bg-blue-50 p-1 h-auto rounded-full transition-colors"
               data-testid="button-back-menu"
             >
               <ArrowLeft className="h-3 w-3 mr-1" />
