@@ -1,0 +1,577 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Educational Chatbot Widget - XYZ College</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    'sans': ['Inter', 'system-ui', 'sans-serif'],
+                },
+                colors: {
+                    'primary': '#2563eb',
+                    'secondary': '#10b981',
+                    'accent': '#f59e0b',
+                },
+                animation: {
+                    'bounce-gentle': 'bounce 2s infinite',
+                    'slide-up': 'slideUp 0.3s ease-out',
+                    'fade-in': 'fadeIn 0.2s ease-out',
+                    'typing': 'typing 1.5s infinite',
+                }
+            }
+        }
+    };
+    </script>
+    <style>
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        .chat-message {
+            animation: slideUp 0.3s ease-out;
+        }
+        .typing-indicator div {
+            animation: typing 1.5s infinite;
+            animation-delay: calc(var(--delay) * 0.1s);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Demo Page Content -->
+    <div class="min-h-screen p-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">XYZ College - AI Chatbot Widget Demo</h1>
+                <p class="text-gray-600 mb-6">Experience our AI-powered educational assistant designed to help students and parents find information quickly and efficiently.</p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">🚀 Easy Integration</h2>
+                        <div class="bg-gray-100 rounded-lg p-4">
+                            <p class="text-sm text-gray-600 mb-2">Copy and paste this snippet into your website:</p>
+                            <code class="text-xs bg-gray-800 text-green-400 p-2 rounded block overflow-x-auto">
+                                &lt;script src="https://chatbot.xyzcollege.edu/widget.js"&gt;&lt;/script&gt;
+                            </code>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">📱 Features</h2>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Instant search & guided menus</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Mobile-responsive design</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Context-aware conversations</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Customizable branding</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Widget -->
+    <div id="chatbot-widget" class="fixed bottom-6 right-6 z-50">
+        <!-- Chat Button -->
+        <div id="chat-button" class="w-16 h-16 bg-primary text-white rounded-full shadow-lg cursor-pointer flex items-center justify-center hover:bg-blue-600 transition-all duration-300 hover:scale-110 animate-bounce-gentle">
+            <i class="fas fa-comments text-xl"></i>
+            <!-- Notification Badge -->
+            <div class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
+                1
+            </div>
+        </div>
+
+        <!-- Chat Window -->
+        <div id="chat-window" class="absolute bottom-20 right-0 w-96 h-[600px] bg-white rounded-xl shadow-2xl border border-gray-200 transform scale-0 origin-bottom-right transition-all duration-300 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <div class="bg-primary text-white p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold">XYZ College Assistant</h3>
+                        <p class="text-xs text-blue-100">Online • Ready to help! 🎓</p>
+                    </div>
+                </div>
+                <button id="close-chat" class="text-white hover:text-blue-200 transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Chat Messages Area -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+                <!-- Welcome Message -->
+                <div class="chat-message">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 shadow-sm max-w-[280px]">
+                            <p class="text-gray-800 text-sm">Welcome to XYZ College! 👋 I'm here to help you with admissions, academics, campus life, and more. How can I assist you today?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="chat-message">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-gray-600 text-xs font-medium ml-1">Choose a topic or ask me anything:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="quick-reply-btn bg-blue-100 text-primary px-3 py-2 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors" data-action="admissions">
+                                    🎓 Admissions
+                                </button>
+                                <button class="quick-reply-btn bg-green-100 text-green-700 px-3 py-2 rounded-full text-sm font-medium hover:bg-green-200 transition-colors" data-action="academics">
+                                    📚 Academics
+                                </button>
+                                <button class="quick-reply-btn bg-purple-100 text-purple-700 px-3 py-2 rounded-full text-sm font-medium hover:bg-purple-200 transition-colors" data-action="campus">
+                                    🎉 Campus Life
+                                </button>
+                                <button class="quick-reply-btn bg-orange-100 text-orange-700 px-3 py-2 rounded-full text-sm font-medium hover:bg-orange-200 transition-colors" data-action="support">
+                                    🛠️ Support
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="border-t border-gray-200 p-4 bg-white">
+                <!-- Breadcrumb Navigation (hidden by default) -->
+                <div id="breadcrumb" class="hidden mb-3 text-xs text-gray-500">
+                    <span class="breadcrumb-item cursor-pointer hover:text-primary" data-action="main">Main Menu</span>
+                </div>
+
+                <!-- Search Input -->
+                <div class="flex items-center space-x-2">
+                    <div class="flex-1 relative">
+                        <input 
+                            type="text" 
+                            id="chat-input" 
+                            placeholder="Type your question here... 💬"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+                        />
+                        <button id="send-button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Back Button (hidden by default) -->
+                <button id="back-button" class="hidden mt-2 text-xs text-gray-500 hover:text-primary transition-colors flex items-center">
+                    <i class="fas fa-arrow-left mr-1"></i> Back to Previous Menu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Responsive Adjustments -->
+    <style>
+        @media (max-width: 640px) {
+            #chat-window {
+                width: calc(100vw - 2rem);
+                height: calc(100vh - 8rem);
+                bottom: 5rem;
+                right: 1rem;
+                left: 1rem;
+            }
+        }
+    </style>
+
+    <script>
+        (function() {
+            // Chatbot Widget Controller
+            const ChatbotWidget = {
+                // State management
+                state: {
+                    isOpen: false,
+                    currentMenu: 'main',
+                    conversationHistory: [],
+                    menuStack: []
+                },
+
+                // Knowledge base with comprehensive educational content
+                knowledgeBase: {
+                    main: {
+                        title: 'Main Menu',
+                        options: [
+                            { id: 'admissions', label: '🎓 Admissions', description: 'Application process, eligibility, documents' },
+                            { id: 'academics', label: '📚 Academics', description: 'Courses, syllabus, faculty information' },
+                            { id: 'campus', label: '🎉 Campus Life', description: 'Clubs, events, hostel facilities' },
+                            { id: 'support', label: '🛠️ Support', description: 'Contact info, tech support, certificates' }
+                        ]
+                    },
+                    admissions: {
+                        title: 'Admissions Information',
+                        parent: 'main',
+                        options: [
+                            { id: 'eligibility', label: '📋 Eligibility Criteria', action: 'showEligibility' },
+                            { id: 'application', label: '📝 Application Process', action: 'showApplication' },
+                            { id: 'documents', label: '📄 Required Documents', action: 'showDocuments' },
+                            { id: 'fees', label: '💰 Fee Structure & Scholarships', action: 'showFees' }
+                        ]
+                    },
+                    academics: {
+                        title: 'Academic Information',
+                        parent: 'main',
+                        options: [
+                            { id: 'departments', label: '🏛️ Departments', action: 'showDepartments' },
+                            { id: 'syllabus', label: '📖 Syllabus & Courses', action: 'showSyllabus' },
+                            { id: 'faculty', label: '👨‍🏫 Faculty & Exams', action: 'showFaculty' }
+                        ]
+                    },
+                    campus: {
+                        title: 'Campus Life',
+                        parent: 'main',
+                        options: [
+                            { id: 'clubs', label: '🎭 Clubs & Activities', action: 'showClubs' },
+                            { id: 'hostel', label: '🏠 Hostel Facilities', action: 'showHostel' },
+                            { id: 'events', label: '🎪 Events & Festivals', action: 'showEvents' }
+                        ]
+                    },
+                    support: {
+                        title: 'Administration & Support',
+                        parent: 'main',
+                        options: [
+                            { id: 'contact', label: '📞 Contact Information', action: 'showContact' },
+                            { id: 'certificates', label: '📜 Certificates & Transcripts', action: 'showCertificates' },
+                            { id: 'tech', label: '💻 Technical Support', action: 'showTechSupport' }
+                        ]
+                    }
+                },
+
+                // Response templates
+                responses: {
+                    showEligibility: "📋 **Eligibility Criteria for Undergraduate Programs:**\n\n• Candidates must have passed 10+2 with at least 50% aggregate marks from a recognized board\n• Specific requirements may vary by course\n• Age limit: 17-25 years for most programs\n\nNeed more specific information about a particular course? Just ask! 😊",
+                    
+                    showApplication: "📝 **Online Application Process:**\n\n1. Visit our Online Admission Portal\n2. Register with your email & phone number\n3. Fill the application form completely\n4. Upload required documents (scan quality should be clear)\n5. Pay the application fee online\n6. Submit and take a printout for your records\n\n💡 **Pro tip:** Keep all documents ready before starting!",
+                    
+                    showDocuments: "📄 **Required Documents Checklist:**\n\n✅ Class 10 & 12 mark sheets (original + photocopy)\n✅ Transfer Certificate from previous institution\n✅ Character Certificate\n✅ ID proof (Aadhar Card/Passport)\n✅ Recent passport-size photographs (6 copies)\n✅ Caste certificate (if applicable)\n✅ Income certificate (for scholarships)\n\n📌 All documents should be attested by a Gazetted Officer.",
+                    
+                    showFees: "💰 **Fee Structure & Scholarships:**\n\n**Undergraduate Courses:** ₹50,000/year (approx.)\n**Postgraduate Courses:** ₹70,000/year (approx.)\n\n🎯 **Scholarship Opportunities:**\n• Merit-based scholarships (up to 50% fee waiver)\n• Need-based financial assistance\n• Government scholarships for eligible categories\n• Sports/Cultural achievement scholarships\n\n💳 Payment can be made online or through demand draft.",
+                    
+                    showDepartments: "🏛️ **Academic Departments:**\n\n🖥️ Computer Science & Engineering\n⚗️ Physics & Chemistry\n📖 English Literature\n💼 Economics & Business Studies\n🧬 Biotechnology\n🔬 Applied Sciences\n\nEach department offers undergraduate and postgraduate programs with excellent faculty and modern infrastructure! 🌟",
+                    
+                    showSyllabus: "📖 **B.Sc Computer Science Syllabus Highlights:**\n\n**Programming Languages:** C, Java, Python, JavaScript\n**Core Subjects:** Data Structures, Operating Systems, DBMS, Computer Networks\n**Emerging Tech:** Artificial Intelligence, Machine Learning, Web Development\n**Practical:** Lab sessions, projects, internships\n\nFor detailed syllabus of other courses, contact our academic office! 📧",
+                    
+                    showFaculty: "👨‍🏫 **Faculty & Examination Information:**\n\n🌟 **Faculty Profiles:** Available on our Faculty Directory page\n📅 **Exam Timetable:** Check Student Portal & Notice Board\n📊 **Assessment Pattern:** Continuous evaluation + Semester exams\n🏆 **Faculty Achievements:** Many PhD holders and industry experts\n\nOur faculty maintains excellent student-teacher ratios for personalized attention! 👩‍🎓",
+                    
+                    showClubs: "🎭 **Student Clubs & Activities (20+ Active Clubs):**\n\n💻 Coding Club - Programming competitions & hackathons\n🎵 Music & Dance Club - Cultural performances\n🎪 Drama Society - Theatre & storytelling\n🗣️ Debate & Quiz Club - Intellectual discussions\n🤖 Robotics Club - Tech innovations\n🌱 Environmental Club - Sustainability initiatives\n\nJoin any club that matches your interests! Every student is welcome 🎉",
+                    
+                    showHostel: "🏠 **Hostel Facilities:**\n\n🔐 **Security:** Separate secured hostels for boys and girls with 24/7 security\n💰 **Fees:** Starting from ₹40,000/year (including mess facility)\n🍲 **Mess:** Nutritious meals with diverse menu options\n🏃‍♂️ **Amenities:** Wi-Fi, study rooms, recreation areas, laundry\n📍 **Location:** Within campus premises for easy access\n\nHostel life builds lifelong friendships and independence! 🤝",
+                    
+                    showEvents: "🎪 **Annual Events & Festivals:**\n\n🎭 **\"Udaan\" Cultural Festival** - February\n   • Music, dance, drama competitions\n   • Celebrity performances & cultural nights\n\n🤖 **\"Innovision 2025\" Tech Festival** - November\n   • Technical competitions, workshops\n   • Industry expert talks, startup expo\n\n🏆 **Sports Meet** - December\n🎓 **Annual Day** - March\n\nThese events showcase student talents and create memorable experiences! ✨",
+                    
+                    showContact: "📞 **Contact Information:**\n\n🎓 **Admission Office:**\n   📧 Email: admissions@xyzcollege.edu\n   📱 Phone: +91-9876543210\n   🕒 Timing: 9 AM - 5 PM (Mon-Fri)\n\n🏛️ **Main Office:**\n   📧 info@xyzcollege.edu\n   📱 +91-9876543211\n\n📍 **Address:** XYZ College, Education City, Your City - 123456\n\nWe're always here to help! Don't hesitate to reach out 😊",
+                    
+                    showCertificates: "📜 **Certificates & Transcripts:**\n\n📋 **Application Process:**\n   • Apply via Student Portal OR visit admin office\n   • Fill certificate request form\n   • Pay prescribed fees\n\n⏰ **Processing Time:** 7 working days\n💰 **Fees:** ₹100 per certificate, ₹200 per transcript\n📮 **Delivery:** Collect in person or request postal delivery\n\n✅ All certificates are digitally verified and tamper-proof!",
+                    
+                    showTechSupport: "💻 **Technical Support:**\n\n🆘 **IT Helpdesk:**\n   📧 Email: support@xyzcollege.edu\n   📱 Phone: +91-9876543212\n   🕒 Available: 24/7 for critical issues\n\n🔧 **Services:**\n   • Student portal login issues\n   • Wi-Fi connectivity problems\n   • Email account setup\n   • Online exam technical support\n\nOur tech team ensures smooth digital experience for all students! 🚀"
+                },
+
+                // DOM element references
+                elements: {
+                    chatButton: null,
+                    chatWindow: null,
+                    closeButton: null,
+                    messagesContainer: null,
+                    chatInput: null,
+                    sendButton: null,
+                    breadcrumb: null,
+                    backButton: null
+                },
+
+                // Initialize the chatbot
+                init() {
+                    this.elements = {
+                        chatButton: document.getElementById('chat-button'),
+                        chatWindow: document.getElementById('chat-window'),
+                        closeButton: document.getElementById('close-chat'),
+                        messagesContainer: document.getElementById('chat-messages'),
+                        chatInput: document.getElementById('chat-input'),
+                        sendButton: document.getElementById('send-button'),
+                        breadcrumb: document.getElementById('breadcrumb'),
+                        backButton: document.getElementById('back-button')
+                    };
+
+                    this.bindEvents();
+                },
+
+                // Bind event listeners
+                bindEvents() {
+                    this.elements.chatButton.addEventListener('click', () => this.toggleChat());
+                    this.elements.closeButton.addEventListener('click', () => this.closeChat());
+                    this.elements.sendButton.addEventListener('click', () => this.sendMessage());
+                    this.elements.chatInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') this.sendMessage();
+                    });
+                    this.elements.backButton.addEventListener('click', () => this.goBack());
+
+                    // Handle quick reply buttons and navigation
+                    document.addEventListener('click', (e) => {
+                        if (e.target.classList.contains('quick-reply-btn')) {
+                            const action = e.target.getAttribute('data-action');
+                            this.handleQuickReply(action);
+                        }
+                        if (e.target.classList.contains('breadcrumb-item')) {
+                            const action = e.target.getAttribute('data-action');
+                            this.navigateToMenu(action);
+                        }
+                    });
+                },
+
+                // Toggle chat window
+                toggleChat() {
+                    this.state.isOpen = !this.state.isOpen;
+                    
+                    if (this.state.isOpen) {
+                        this.elements.chatWindow.style.transform = 'scale(1)';
+                        this.elements.chatInput.focus();
+                        // Remove notification badge
+                        const badge = this.elements.chatButton.querySelector('.absolute');
+                        if (badge) badge.style.display = 'none';
+                    } else {
+                        this.elements.chatWindow.style.transform = 'scale(0)';
+                    }
+                },
+
+                // Close chat window
+                closeChat() {
+                    this.state.isOpen = false;
+                    this.elements.chatWindow.style.transform = 'scale(0)';
+                },
+
+                // Handle quick reply button clicks
+                handleQuickReply(action) {
+                    this.addUserMessage(`Selected: ${this.getMenuTitle(action)}`);
+                    this.navigateToMenu(action);
+                },
+
+                // Navigate to specific menu
+                navigateToMenu(menuId) {
+                    if (menuId === 'main') {
+                        this.state.menuStack = [];
+                        this.state.currentMenu = 'main';
+                        this.showMainMenu();
+                    } else if (this.knowledgeBase[menuId]) {
+                        if (this.state.currentMenu !== 'main') {
+                            this.state.menuStack.push(this.state.currentMenu);
+                        }
+                        this.state.currentMenu = menuId;
+                        this.showMenu(menuId);
+                    } else {
+                        this.handleResponse(menuId);
+                    }
+                    this.updateBreadcrumb();
+                },
+
+                // Go back to previous menu
+                goBack() {
+                    if (this.state.menuStack.length > 0) {
+                        this.state.currentMenu = this.state.menuStack.pop();
+                        this.showMenu(this.state.currentMenu);
+                    } else {
+                        this.state.currentMenu = 'main';
+                        this.showMainMenu();
+                    }
+                    this.updateBreadcrumb();
+                },
+
+                // Show main menu
+                showMainMenu() {
+                    const menu = this.knowledgeBase.main;
+                    this.addBotMessage("What would you like to know about? Choose from the options below:", menu.options);
+                },
+
+                // Show specific menu
+                showMenu(menuId) {
+                    const menu = this.knowledgeBase[menuId];
+                    if (menu) {
+                        this.addBotMessage(`Here are the ${menu.title} options:`, menu.options);
+                    }
+                },
+
+                // Handle specific responses
+                handleResponse(action) {
+                    if (this.responses[action]) {
+                        this.addBotMessage(this.responses[action]);
+                        // Show back button after response
+                        this.elements.backButton.classList.remove('hidden');
+                    } else {
+                        this.handleFallback();
+                    }
+                },
+
+                // Handle unrecognized queries
+                handleFallback() {
+                    const fallbackMessage = `I'm sorry, I didn't quite understand that. 🤔 Here are some things I can help you with:
+
+🎓 Ask about admissions, eligibility, or application process
+📚 Get information about courses and academic programs  
+🎉 Learn about campus life, clubs, and events
+🛠️ Find contact information and support services
+
+Or you can browse through the menu options below! 👇`;
+
+                    this.addBotMessage(fallbackMessage, this.knowledgeBase.main.options);
+                },
+
+                // Send user message
+                sendMessage() {
+                    const message = this.elements.chatInput.value.trim();
+                    if (message) {
+                        this.addUserMessage(message);
+                        this.elements.chatInput.value = '';
+                        
+                        // TODO: Implement natural language processing for user queries
+                        // For now, show fallback response
+                        setTimeout(() => {
+                            this.handleFallback();
+                        }, 1000);
+                    }
+                },
+
+                // Add user message to chat
+                addUserMessage(message) {
+                    const messageEl = document.createElement('div');
+                    messageEl.className = 'chat-message flex justify-end';
+                    messageEl.innerHTML = `
+                        <div class="bg-primary text-white rounded-lg p-3 shadow-sm max-w-[280px]">
+                            <p class="text-sm">${message}</p>
+                        </div>
+                    `;
+                    this.elements.messagesContainer.appendChild(messageEl);
+                    this.scrollToBottom();
+                },
+
+                // Add bot message to chat
+                addBotMessage(message, options = null) {
+                    // Show typing indicator
+                    this.showTypingIndicator();
+                    
+                    setTimeout(() => {
+                        this.hideTypingIndicator();
+                        
+                        const messageEl = document.createElement('div');
+                        messageEl.className = 'chat-message';
+                        
+                        let optionsHtml = '';
+                        if (options) {
+                            optionsHtml = `
+                                <div class="space-y-2 mt-3">
+                                    <div class="flex flex-wrap gap-2">
+                                        ${options.map(option => `
+                                            <button class="quick-reply-btn bg-blue-100 text-primary px-3 py-2 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors" data-action="${option.id}">
+                                                ${option.label}
+                                            </button>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        
+                        messageEl.innerHTML = `
+                            <div class="flex items-start space-x-3">
+                                <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="bg-white rounded-lg p-3 shadow-sm max-w-[280px]">
+                                    <p class="text-gray-800 text-sm whitespace-pre-line">${message}</p>
+                                    ${optionsHtml}
+                                </div>
+                            </div>
+                        `;
+                        
+                        this.elements.messagesContainer.appendChild(messageEl);
+                        this.scrollToBottom();
+                    }, 1500);
+                },
+
+                // Show typing indicator
+                showTypingIndicator() {
+                    const typingEl = document.createElement('div');
+                    typingEl.className = 'typing-indicator chat-message';
+                    typingEl.id = 'typing-indicator';
+                    typingEl.innerHTML = `
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 shadow-sm">
+                                <div class="flex space-x-1">
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full" style="--delay: 0"></div>
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full" style="--delay: 1"></div>
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full" style="--delay: 2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    this.elements.messagesContainer.appendChild(typingEl);
+                    this.scrollToBottom();
+                },
+
+                // Hide typing indicator
+                hideTypingIndicator() {
+                    const typingEl = document.getElementById('typing-indicator');
+                    if (typingEl) {
+                        typingEl.remove();
+                    }
+                },
+
+                // Update breadcrumb navigation
+                updateBreadcrumb() {
+                    if (this.state.currentMenu === 'main') {
+                        this.elements.breadcrumb.classList.add('hidden');
+                        this.elements.backButton.classList.add('hidden');
+                    } else {
+                        const menu = this.knowledgeBase[this.state.currentMenu];
+                        if (menu && menu.parent) {
+                            this.elements.breadcrumb.classList.remove('hidden');
+                            this.elements.breadcrumb.innerHTML = `
+                                <span class="breadcrumb-item cursor-pointer hover:text-primary" data-action="main">Main Menu</span>
+                                <span class="mx-1">></span>
+                                <span class="text-primary">${menu.title}</span>
+                            `;
+                            this.elements.backButton.classList.remove('hidden');
+                        }
+                    }
+                },
+
+                // Get menu title by ID
+                getMenuTitle(menuId) {
+                    const menu = this.knowledgeBase[menuId];
+                    return menu ? menu.title : menuId;
+                },
+
+                // Scroll to bottom of messages
+                scrollToBottom() {
+                    this.elements.messagesContainer.scrollTop = this.elements.messagesContainer.scrollHeight;
+                }
+            };
+
+            // Initialize the chatbot when DOM is ready
+            document.addEventListener('DOMContentLoaded', () => {
+                ChatbotWidget.init();
+            });
+
+        })();
+    </script>
+</body>
+</html>
