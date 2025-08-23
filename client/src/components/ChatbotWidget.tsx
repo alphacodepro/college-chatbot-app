@@ -266,20 +266,21 @@ export function ChatbotWidget() {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-[9999]">
+    <div className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-[9999]">
       {/* Chat Button */}
       <Button
         onClick={toggleChat}
         className={cn(
-          "w-16 h-16 rounded-full shadow-lg hover:scale-105 transition-all duration-200",
+          "w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-lg hover:scale-105 transition-all duration-200",
           "bg-[hsl(203.8863,88.2845%,53.1373%)] hover:bg-[hsl(203.8863,88.2845%,48%)]",
+          "active:scale-95 touch-manipulation",
           !isOpen && "hover:animate-pulse"
         )}
         data-testid="button-chat-toggle"
       >
-        <MessageCircle className="h-6 w-6 text-white" />
+        <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
         {!isOpen && (
-          <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold animate-pulse">
+          <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold animate-pulse">
             1
           </div>
         )}
@@ -289,7 +290,7 @@ export function ChatbotWidget() {
       <Card 
         className={cn(
           "absolute bottom-20 right-0 w-80 h-[450px] shadow-2xl transform transition-all duration-300 flex flex-col overflow-hidden bg-white rounded-2xl border border-gray-200",
-          "sm:w-[calc(100vw-2rem)] sm:h-[75vh] sm:bottom-20 sm:right-4 sm:left-4 sm:mx-auto",
+          "sm:w-[85vw] sm:max-w-[350px] sm:h-[60vh] sm:max-h-[500px] sm:bottom-20 sm:right-4",
           "md:w-[320px] md:h-[480px] md:right-0 md:left-auto",
           isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         )}
@@ -301,16 +302,17 @@ export function ChatbotWidget() {
         data-testid="card-chat-window"
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 flex items-center justify-between rounded-t-2xl">
-          <div className="flex items-center space-x-3">
-            <div className="w-11 h-11 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
-              <span className="text-xl">🎓</span>
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 sm:p-4 flex items-center justify-between rounded-t-2xl">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="w-9 h-9 sm:w-11 sm:h-11 bg-white bg-opacity-20 rounded-full flex items-center justify-center backdrop-blur-sm">
+              <span className="text-lg sm:text-xl">🎓</span>
             </div>
             <div>
-              <h3 className="font-semibold text-white">XYZ College Assistant</h3>
+              <h3 className="font-semibold text-white text-sm sm:text-base">XYZ College Assistant</h3>
               <div className="text-xs text-blue-100 flex items-center">
                 <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                Online • Ready to help!
+                <span className="hidden sm:inline">Online • Ready to help!</span>
+                <span className="sm:hidden">Online</span>
               </div>
             </div>
           </div>
@@ -326,29 +328,29 @@ export function ChatbotWidget() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-blue-50/30 to-white">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gradient-to-b from-blue-50/30 to-white">
           {messages.map((message) => (
             <div key={message.id} className="animate-slide-up">
               {message.type === 'bot' ? (
-                <div className="flex items-start space-x-3 mb-4">
-                  <div className="w-9 h-9 bg-gradient-to-br from-blue-400 to-blue-600 text-white rounded-full flex items-center justify-center shadow-sm flex-shrink-0">
-                    <span className="text-sm">🤖</span>
+                <div className="flex items-start space-x-2 sm:space-x-3 mb-3 sm:mb-4">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-blue-400 to-blue-600 text-white rounded-full flex items-center justify-center shadow-sm flex-shrink-0">
+                    <span className="text-xs sm:text-sm">🤖</span>
                   </div>
                   <div className="flex-1">
-                    <div className="bg-white rounded-2xl rounded-tl-md p-4 shadow-md border border-gray-100 max-w-[240px]">
+                    <div className="bg-white rounded-2xl rounded-tl-md p-3 sm:p-4 shadow-md border border-gray-100 max-w-[85%] sm:max-w-[240px]">
                       <p className="text-gray-800 text-sm whitespace-pre-line leading-relaxed" data-testid={`text-bot-message-${message.id}`}>
                         {message.content}
                       </p>
                     </div>
                     {message.options && (
-                      <div className="flex flex-wrap gap-2 mt-3 max-w-[240px]">
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3 max-w-[85%] sm:max-w-[240px]">
                         {message.options.map((option) => (
                           <Button
                             key={option.id}
                             variant="secondary"
                             size="sm"
                             onClick={() => handleQuickReply(option.action || option.id)}
-                            className="text-xs bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 hover:from-blue-100 hover:to-blue-200 border border-blue-200 rounded-full px-3 py-1.5 shadow-sm transition-all duration-200 hover:shadow-md"
+                            className="text-xs bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 hover:from-blue-100 hover:to-blue-200 border border-blue-200 rounded-full px-2.5 sm:px-3 py-1 sm:py-1.5 shadow-sm transition-all duration-200 hover:shadow-md"
                             data-testid={`button-quick-reply-${option.id}`}
                           >
                             {option.label}
@@ -362,9 +364,9 @@ export function ChatbotWidget() {
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-end mb-4">
-                  <div className="flex flex-col items-end max-w-[240px]">
-                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl rounded-tr-md p-3 shadow-md">
+                <div className="flex justify-end mb-3 sm:mb-4">
+                  <div className="flex flex-col items-end max-w-[85%] sm:max-w-[240px]">
+                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl rounded-tr-md p-2.5 sm:p-3 shadow-md">
                       <p className="text-sm font-medium" data-testid={`text-user-message-${message.id}`}>
                         {message.content}
                       </p>
@@ -399,7 +401,7 @@ export function ChatbotWidget() {
         </div>
 
         {/* Input Area */}
-        <CardContent className="border-t border-gray-200 p-4 bg-white rounded-b-2xl">
+        <CardContent className="border-t border-gray-200 p-3 sm:p-4 bg-white rounded-b-2xl">
           {getBreadcrumb()}
           
           <div className="flex items-center space-x-2">
@@ -409,17 +411,17 @@ export function ChatbotWidget() {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type your question here... 💬"
-                className="pr-12 rounded-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 hover:bg-white transition-colors shadow-sm"
+                className="pr-10 sm:pr-12 rounded-full border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-gray-50 hover:bg-white transition-colors shadow-sm text-sm sm:text-base min-h-[40px] sm:min-h-[44px]"
                 data-testid="input-chat-message"
               />
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={handleSendMessage}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-2 h-8 w-8 rounded-full transition-all duration-200"
+                className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 p-1.5 sm:p-2 h-7 w-7 sm:h-8 sm:w-8 rounded-full transition-all duration-200 active:scale-95 touch-manipulation"
                 data-testid="button-send-message"
               >
-                <Send className="h-4 w-4" />
+                <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </Button>
             </div>
           </div>
