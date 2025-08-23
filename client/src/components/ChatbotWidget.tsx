@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { MessageCircle, X, ArrowLeft, Send, Bot, User } from 'lucide-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
-import { knowledgeBase, responses, fallbackMessage, type MenuOption } from '@/lib/knowledgeBase';
+import { knowledgeBase, responses, fallbackMessage, searchKnowledgeBase, type MenuOption } from '@/lib/knowledgeBase';
 import { cn } from '@/lib/utils';
 
 interface ChatMessage {
@@ -212,14 +212,25 @@ export function ChatbotWidget() {
     
     setInputValue('');
     
-    // For now, show fallback response for any user input
+    // Search for relevant response
     showTypingIndicator();
     setTimeout(() => {
-      addMessage({
-        type: 'bot',
-        content: fallbackMessage,
-        options: knowledgeBase.main.options,
-      });
+      const searchResult = searchKnowledgeBase(message);
+      
+      if (searchResult && responses[searchResult]) {
+        // Found a relevant response
+        addMessage({
+          type: 'bot',
+          content: responses[searchResult],
+        });
+      } else {
+        // No match found, show fallback with main menu options
+        addMessage({
+          type: 'bot',
+          content: fallbackMessage,
+          options: knowledgeBase.main.options,
+        });
+      }
     }, 1500);
   };
 

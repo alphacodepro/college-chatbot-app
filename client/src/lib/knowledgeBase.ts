@@ -92,6 +92,66 @@ export const responses: Record<string, string> = {
   showTechSupport: "💻 **Technical Support:**\n\n🆘 **IT Helpdesk:**\n   📧 Email: support@xyzcollege.edu\n   📱 Phone: +91-9876543212\n   🕒 Available: 24/7 for critical issues\n\n🔧 **Services:**\n   • Student portal login issues\n   • Wi-Fi connectivity problems\n   • Email account setup\n   • Online exam technical support\n\nOur tech team ensures smooth digital experience for all students! 🚀"
 };
 
+// Keyword mapping for intelligent search
+export const keywordMap: Record<string, string[]> = {
+  // Admissions keywords
+  showEligibility: ['eligibility', 'criteria', 'requirements', 'qualify', 'admission requirements', 'eligible', 'requirement', 'qualify for', 'can i apply', 'who can apply', 'minimum marks', 'percentage', 'aggregate'],
+  showApplication: ['apply', 'application', 'how to apply', 'application process', 'online application', 'registration', 'register', 'admission portal', 'applying', 'submit application'],
+  showDocuments: ['documents', 'document', 'papers', 'certificates', 'marksheet', 'mark sheet', 'transfer certificate', 'tc', 'id proof', 'aadhar', 'passport', 'photos', 'required documents', 'what documents'],
+  showFees: ['fees', 'fee', 'cost', 'charges', 'expenses', 'tuition', 'scholarship', 'financial aid', 'fee structure', 'how much', 'price', 'payment', 'scholarships', 'waiver'],
+  
+  // Academics keywords  
+  showDepartments: ['departments', 'department', 'courses', 'programs', 'subjects', 'branches', 'streams', 'computer science', 'physics', 'chemistry', 'english', 'economics', 'business', 'biotechnology'],
+  showSyllabus: ['syllabus', 'curriculum', 'course content', 'subjects', 'what will i study', 'topics', 'programming languages', 'java', 'python', 'c++', 'data structures', 'algorithms'],
+  showFaculty: ['faculty', 'teachers', 'professors', 'staff', 'exam', 'exams', 'examination', 'timetable', 'schedule', 'assessment', 'evaluation'],
+  
+  // Campus Life keywords
+  showClubs: ['clubs', 'activities', 'extracurricular', 'coding club', 'music', 'dance', 'drama', 'debate', 'robotics', 'environmental', 'student activities', 'competitions'],
+  showHostel: ['hostel', 'accommodation', 'housing', 'residence', 'stay', 'rooms', 'mess', 'food', 'boarding', 'facilities', 'security', 'boys hostel', 'girls hostel'],
+  showEvents: ['events', 'festivals', 'fest', 'cultural', 'technical', 'udaan', 'innovision', 'celebrations', 'programs', 'competitions', 'sports meet'],
+  
+  // Support keywords
+  showContact: ['contact', 'phone', 'email', 'address', 'location', 'admission office', 'reach', 'call', 'number', 'office hours', 'timing'],
+  showCertificates: ['certificate', 'transcript', 'degree', 'diploma', 'documents', 'verification', 'attestation', 'provisional', 'original'],
+  showTechSupport: ['technical support', 'tech support', 'it help', 'portal issue', 'login problem', 'password', 'wifi', 'internet', 'computer', 'system']
+};
+
+// Smart search function
+export function searchKnowledgeBase(query: string): string | null {
+  const normalizedQuery = query.toLowerCase().trim();
+  
+  // Direct keyword matching
+  for (const [responseKey, keywords] of Object.entries(keywordMap)) {
+    for (const keyword of keywords) {
+      if (normalizedQuery.includes(keyword.toLowerCase())) {
+        return responseKey;
+      }
+    }
+  }
+  
+  // Fuzzy matching for common variations
+  const commonSynonyms: Record<string, string[]> = {
+    'fees': ['fee', 'cost', 'price', 'money', 'charges', 'payment'],
+    'apply': ['application', 'admission', 'join', 'enroll', 'register'],
+    'hostel': ['accommodation', 'residence', 'rooms', 'housing', 'stay'],
+    'courses': ['programs', 'subjects', 'degrees', 'streams', 'branches'],
+    'contact': ['phone', 'email', 'reach', 'call', 'address']
+  };
+  
+  for (const [mainWord, synonyms] of Object.entries(commonSynonyms)) {
+    if (synonyms.some(syn => normalizedQuery.includes(syn))) {
+      // Find the response key that contains this main word
+      for (const [responseKey, keywords] of Object.entries(keywordMap)) {
+        if (keywords.some(keyword => keyword.includes(mainWord))) {
+          return responseKey;
+        }
+      }
+    }
+  }
+  
+  return null;
+}
+
 export const fallbackMessage = `I'm sorry, I didn't quite understand that. 🤔 Here are some things I can help you with:
 
 🎓 Ask about admissions, eligibility, or application process
