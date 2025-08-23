@@ -255,20 +255,20 @@ export function ChatbotWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-4 right-4 z-[9999]">
       {/* Chat Button */}
       <Button
         onClick={toggleChat}
         className={cn(
-          "w-16 h-16 rounded-full shadow-lg hover:scale-110 transition-all duration-300",
+          "w-16 h-16 rounded-full shadow-lg hover:scale-105 transition-all duration-200",
           "bg-[hsl(203.8863,88.2845%,53.1373%)] hover:bg-[hsl(203.8863,88.2845%,48%)]",
-          !isOpen && "animate-bounce"
+          !isOpen && "hover:animate-pulse"
         )}
         data-testid="button-chat-toggle"
       >
-        <MessageCircle className="h-6 w-6" />
+        <MessageCircle className="h-6 w-6 text-white" />
         {!isOpen && (
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold">
+          <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-semibold animate-pulse">
             1
           </div>
         )}
@@ -277,9 +277,10 @@ export function ChatbotWidget() {
       {/* Chat Window */}
       <Card 
         className={cn(
-          "absolute bottom-20 right-0 w-96 h-[600px] shadow-2xl transform transition-all duration-300 flex flex-col overflow-hidden",
-          "sm:w-[calc(100vw-2rem)] sm:h-[calc(100vh-8rem)] sm:bottom-20 sm:right-1 sm:left-1",
-          isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0 pointer-events-none"
+          "absolute bottom-20 right-0 w-96 h-[500px] shadow-2xl transform transition-all duration-300 flex flex-col overflow-hidden bg-white",
+          "sm:w-[calc(100vw-1rem)] sm:h-[calc(100vh-6rem)] sm:bottom-16 sm:right-0",
+          "md:w-[400px] md:h-[550px]",
+          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         )}
         style={{ transformOrigin: 'bottom right' }}
         data-testid="card-chat-window"

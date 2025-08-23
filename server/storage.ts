@@ -59,8 +59,11 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const now = new Date();
     const chatSession: ChatSession = {
-      ...session,
       id,
+      sessionId: session.sessionId,
+      currentMenu: session.currentMenu || 'main',
+      menuStack: session.menuStack || [],
+      conversationHistory: session.conversationHistory || [],
       createdAt: now,
       updatedAt: now,
     };
