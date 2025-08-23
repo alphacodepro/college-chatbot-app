@@ -1,0 +1,64 @@
+Create a professional, AI-powered chatbot widget for schools and colleges with the following specifications:
+
+1️⃣ **Integration & Ease of Use**:
+- The chatbot should be **ready-to-deploy** so that schools/colleges can add it to their website easily without coding knowledge.
+- Integration should be as simple as **copy-pasting a single script or iframe snippet** into any web page. No complex setup should be required.
+- Include instructions for administrators: “Copy the snippet, paste it in your website’s footer, and the chatbot will appear automatically.”
+
+2️⃣ **Appearance & UI**:
+- Floating chat button in the bottom-right corner with smooth open/close animation.
+- Expandable chat window that works perfectly on desktops, tablets, and mobile devices.
+- Modern, clean, and customizable design (colors, logo, and institution name).
+- Friendly interface with **emojis** to make interactions lively and engaging.
+- Quick-reply buttons and guided menus to help users navigate easily.
+
+3️⃣ **Core Features**:
+- **Instant search bar** for students to type questions and get answers immediately.
+- Multi-level **guided menu prompts**: e.g., Main Menu → Admissions → Undergraduate → Eligibility.
+- Include **“Back to Main Menu”** or **“Back to Previous Menu”** buttons at every level.
+- **Context-aware responses**: chatbot remembers conversation within the session to guide the user better.
+- **Fallback responses**: if the chatbot doesn’t recognize a question, politely suggest alternative options or quick links.
+- Integration-ready with backend APIs or knowledge bases so the school can update FAQs anytime.
+- Works across all browsers and devices.
+
+4️⃣ **Knowledge Base & Example Q&A**:
+
+**Admissions 🎓**
+- Q: What are the eligibility criteria for undergraduate programs?  
+  A: Candidates must have passed 10+2 with at least 50% aggregate marks from a recognized board. Specific requirements may vary by course.
+- Q: How to apply online?  
+  A: Apply through the Online Admission Portal 📝. Register, fill the form, upload documents, and pay the application fee.
+- Q: Required documents?  
+  A: Class 10 & 12 mark sheets, Transfer Certificate, ID proof (Aadhar/Passport), Passport-size photos 📄.
+- Q: Fee structure & scholarships 💰  
+  A: UG courses approx. ₹50,000/year; PG courses ₹70,000/year. Scholarships: merit-based, need-based, govt., up to 50% fee waiver.
+
+**Academics 📚**
+- Q: List of departments?  
+  A: Computer Science, Physics, Chemistry, English, Economics, Business Studies, Biotechnology.
+- Q: Syllabus for B.Sc Computer Science?  
+  A: Programming (C, Java, Python), Data Structures, OS, DBMS, AI.
+- Q: Faculty profiles & exam timetable  
+  A: Faculty profiles on Faculty Directory. Exam timetable on Notice Board & Student Portal.
+
+**Campus Life 🎉**
+- Q: Clubs available?  
+  A: 20+ clubs: Coding, Music, Drama, Debate, Robotics, Environmental.
+- Q: Hostel facilities?  
+  A: Separate secured hostels for boys and girls. Fees start ₹40,000/year (with mess 🍲).
+- Q: Events & fests  
+  A: Cultural fest “Udaan” in February 🎭, TechFest “Innovision 2025” in November 🤖.
+
+**Administration & Support 🛠️**
+- Q: Contact admission office?  
+  A: Email: admissions@xyzcollege.edu | Phone: +91-9876543210
+- Q: Certificates & transcripts  
+  A: Apply via Student Portal or admin office; transcripts issued in 7 working days.
+- Q: Tech support  
+  A: IT Helpdesk: support@xyzcollege.edu
+
+5️⃣ **Design & UX Enhancements**:
+- Use emojis in answers and menu prompts to make interaction more lively and friendly.
+- Highlight quick-reply buttons to guide users through FAQs efficiently.
+- Provide **contextual suggestions** based on previous user choices.
+- Responses should be **concise, clear, professional, and friendly**, with occasional friendly emojis to create a welcoming feel.
