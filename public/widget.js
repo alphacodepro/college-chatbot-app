@@ -8,7 +8,7 @@
   // 2. Add the chatbot styles and code
   chatbotContainer.innerHTML = `
     <div id="chatbot-widget"></div>
-    <link rel="stylesheet" href="https://your-chatbot.replit.app/widget-styles.css">
+    <link rel="stylesheet" href="https://college-chatbot-app.onrender.com/widget-styles.css">
   `;
   
   // 3. Put the chatbot on the website
@@ -16,6 +16,6 @@
   
   // 4. Load the chatbot functionality
   const script = document.createElement('script');
-  script.src = 'https://your-chatbot.replit.app/chatbot-bundle.js';
+  script.src = 'https://college-chatbot-app.onrender.com/chatbot-bundle.js';
   document.head.appendChild(script);
 })();
