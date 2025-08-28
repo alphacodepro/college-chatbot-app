@@ -1,7 +1,12 @@
 import express, { type Request, Response, NextFunction } from "express";
-import path from "path";   // 👈 added for static file serving
+import path from "path";
+import { fileURLToPath } from "url";   // 👈 fix for __dirname in ESM
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+
+// ✅ Polyfill for __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
@@ -40,8 +45,10 @@ app.use((req, res, next) => {
 (async () => {
   const server = await registerRoutes(app);
 
-  // ✅ serve widget.js from /public
+  // ✅ Serve widget files from /public
   app.use("/widget.js", express.static(path.join(__dirname, "../public/widget.js")));
+  app.use("/widget-styles.css", express.static(path.join(__dirname, "../public/widget-styles.css")));
+  app.use("/chatbot-bundle.js", express.static(path.join(__dirname, "../public/chatbot-bundle.js")));
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
@@ -51,20 +58,15 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
+  // only setup vite in dev mode
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
+  // Always listen on Render's provided PORT
+  const port = parseInt(process.env.PORT || "5000", 10);
   server.listen(
     {
       port,
